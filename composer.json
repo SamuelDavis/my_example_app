@@ -15,7 +15,7 @@
     },
     "config": {
         "github-oauth": {
-            "github.com": "74dc1ea5813edc231843966e03cd48961593206e"
+            "github.com": "myoauthtoken"
         }
     }
 }
