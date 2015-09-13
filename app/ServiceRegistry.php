@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Slim\Slim;
 
-class IoC
+class ServiceRegistry
 {
     public function apply(Slim $app)
     {

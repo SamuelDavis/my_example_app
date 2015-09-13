@@ -1,6 +1,6 @@
 <?php
 
-use App\IoC;
+use App\ServiceRegistry;
 use Slim\Slim;
 use Slim\Views\Blade;
 
@@ -19,6 +19,6 @@ $app = new Slim($config);
 
 $app->view(Blade::class)->parserOptions = $app->config('view.options');
 
-(new IoC())->apply($app);
+(new ServiceRegistry())->apply($app);
 
 return $app;
