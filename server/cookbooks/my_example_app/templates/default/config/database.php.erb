@@ -1,0 +1,10 @@
+<?php
+
+return [
+    'driver' => 'pdo_<%= node["database"]["driver"] %>',
+    'host' => '<%= node["database"]["host"] %>',
+    'port' => '<%= node["database"]["port"] %>',
+    'dbname' => '<%= node["database"]["name"] %>',
+    'user' => '<%= node["database"]["user"] %>',
+    'password' => '<%= node["database"]["pass"] %>',
+];

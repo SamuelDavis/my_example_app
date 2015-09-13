@@ -1,0 +1,7 @@
+.idea/
+app/config/
+vendor/
+views/cache/
+server/.chef/
+server/.vagrant/
+server/error.log

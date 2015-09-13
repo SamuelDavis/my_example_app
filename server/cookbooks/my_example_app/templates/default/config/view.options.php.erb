@@ -1,0 +1,10 @@
+<?php
+
+return [
+    <% if (node.chef_environment == 'development') %>
+    'debug' => true,
+    <% else %>
+    'debug' => false,
+    <% end %>
+    'cache' => '<%= node["app"]["directories"]["view.cache"] %>',
+];
