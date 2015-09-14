@@ -10,3 +10,7 @@ td {
 .hidden {
     display: none;
 }
+
+ul.unstyled {
+    list-style-type: none;
+}

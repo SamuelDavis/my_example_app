@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Controllers\UserController;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 use Doctrine\ORM\EntityManager;
@@ -25,17 +26,21 @@ class ServiceRegistry
         $entityManager->getConfiguration()->setMetadataDriverImpl($entityManagerDriver);
 
         $userRepository = new UserRepository($entityManager);
+        $roleRepository = new RoleRepository($entityManager);
 
-        $userController = new UserController($app, $app->request, $userRepository);
+        $userController = new UserController($app, $app->request, $userRepository, $roleRepository);
         $router = new Router($userController);
 
-        $bindings = [
+        $this->setBindings($app, [
             $entityManager,
             $userRepository,
+            $roleRepository,
             $userController,
             $router,
-        ];
+        ]);
+    }
 
+    private function setBindings(Slim $app, array $bindings) {
         foreach ($bindings as $binding) {
             $app->container->set(get_class($binding), $binding);
         }

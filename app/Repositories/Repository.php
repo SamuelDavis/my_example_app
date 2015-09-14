@@ -11,7 +11,8 @@ abstract class Repository
 {
     const ENTITY = '';
 
-    private $entityManager;
+    /** @var EntityManager */
+    protected $entityManager;
     /** @var EntityRepository */
     protected $repo;
 

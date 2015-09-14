@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Entities\User;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use Slim\Http\Request;
 use Slim\Slim;
@@ -10,12 +11,18 @@ use Slim\Slim;
 class UserController extends Controller
 {
     private $userRepository;
+    private $roleRepository;
 
-    public function __construct(Slim $app, Request $request, UserRepository $userRepository)
-    {
+    public function __construct(
+        Slim $app,
+        Request $request,
+        UserRepository $userRepository,
+        RoleRepository $roleRepository
+    ) {
         parent::__construct($app, $request);
 
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
     }
 
     public function index()
@@ -36,6 +43,7 @@ class UserController extends Controller
     {
         $this->render('users/edit', [
             'user' => $id ? $this->userRepository->get($id) : $this->userRepository->build(),
+            'roles' => $this->roleRepository->getAll(),
         ]);
     }
 
@@ -47,8 +55,19 @@ class UserController extends Controller
             $user = $this->userRepository->build();
         }
 
-        $user->setFirstName($this->request->post(User::FIRST_NAME));
-        $user->setLastName($this->request->post(User::LAST_NAME));
+        $user
+            ->setFirstName($this->request->post(User::FIRST_NAME))
+            ->setLastName($this->request->post(User::LAST_NAME));
+
+        $postedRoleIds = array_keys($this->request->post(User::ROLES));
+
+        foreach ($this->roleRepository->getAll() as $role) {
+            if (in_array($role->getId(), $postedRoleIds)) {
+                $user->addRole($role);
+            } else {
+                $user->removeRole($role);
+            }
+        }
 
         if ($this->request->post('save')) {
             $this->userRepository->add($user);
