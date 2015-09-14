@@ -11,7 +11,6 @@ use Slim\Slim;
 
 class UserController extends Controller
 {
-    private $authenticator;
     private $userRepository;
     private $roleRepository;
 
@@ -22,9 +21,8 @@ class UserController extends Controller
         UserRepository $userRepository,
         RoleRepository $roleRepository
     ) {
-        parent::__construct($app, $request);
+        parent::__construct($app, $request, $authenticator);
 
-        $this->authenticator = $authenticator;
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
     }
@@ -33,7 +31,6 @@ class UserController extends Controller
     {
         $this->render('users/list', [
             'users' => $this->userRepository->getAll(),
-            'currentUser' => $this->authenticator->getCurrentUser(),
         ]);
     }
 

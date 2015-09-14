@@ -42,7 +42,7 @@ class Router
         $this->app->post('/login', function() {
             return $this->rootController->postLogin();
         });
-        $this->app->post('/logout', function() {
+        $this->app->get('/logout', function() {
             return $this->rootController->logout();
         });
     }

@@ -3,7 +3,6 @@
 use App\Entities\User;
 
 /**
- * @var User $currentUser
  * @var User[] $users
  */
 ?>
@@ -26,14 +25,4 @@ use App\Entities\User;
         <?php endforeach; ?>
     </table>
     <a href="/users/edit"><button>Add New User</button></a>
-    <hr>
-    <?php if ($currentUser): ?>
-    <form action="/logout" method="post">
-        <input type="submit" value="Logout">
-    </form>
-    <?php else: ?>
-    <form action="/login">
-        <input type="submit" value="Login">
-    </form>
-    <?php endif; ?>
 @stop

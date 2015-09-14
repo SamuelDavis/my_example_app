@@ -10,7 +10,6 @@ use Slim\Slim;
 
 class RootController extends Controller
 {
-    private $authenticator;
     private $userRepository;
 
     public function __construct(
@@ -19,7 +18,7 @@ class RootController extends Controller
         AuthenticationService $authenticator,
         UserRepository $userRepository
     ) {
-        parent::__construct($app, $request);
+        parent::__construct($app, $request, $authenticator);
 
         $this->authenticator = $authenticator;
         $this->userRepository = $userRepository;

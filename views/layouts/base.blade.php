@@ -6,6 +6,7 @@
     @yield('head')
 </head>
 <body>
+@include('includes/nav')
 @yield('body')
 @yield('foot')
 </body>
