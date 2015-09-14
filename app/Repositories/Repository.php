@@ -46,6 +46,7 @@ abstract class Repository
 
     public function build()
     {
-        return new User();
+        $entity = static::ENTITY;
+        return new $entity();
     }
 }

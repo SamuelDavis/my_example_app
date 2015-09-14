@@ -14,18 +14,24 @@ use App\Entities\User;
     <form action="/users/edit" method="post">
 
         <?php if($id = $user->getId()): ?>
-        <label for="id">Id: <?= $id ?></label>
+        <label for="<?= User::ID ?>">Id: <?= $id ?></label>
         <input type="hidden" name="<?= User::ID ?>" value="<?= $user->getId() ?>">
         <br>
 
         <?php endif; ?>
-        <label for="first_name">First Name</label>:
+        <label for="<?= User::FIRST_NAME ?>">First Name</label>:
         <input type="text" name="<?= User::FIRST_NAME ?>" value="<?= $user->getFirstName() ?>">
         <br>
 
-        <label for="last_name">Last Name</label>:
+        <label for="<?= User::LAST_NAME ?>">Last Name</label>:
         <input type="text" name="<?= User::LAST_NAME ?>" value="<?= $user->getLastName() ?>">
         <br>
+
+        <?php if (!$user->hasPassword()): ?>
+        <label for="<?= User::PASSWORD ?>">Password</label>:
+        <input type="text" name="<?= User::PASSWORD ?>">
+        <br>
+        <?php endif; ?>
 
         <label for="roles">Roles</label>
         <ul class="unstyled">

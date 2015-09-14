@@ -59,7 +59,11 @@ class UserController extends Controller
             ->setFirstName($this->request->post(User::FIRST_NAME))
             ->setLastName($this->request->post(User::LAST_NAME));
 
-        $postedRoleIds = array_keys($this->request->post(User::ROLES));
+        if ($password = $this->request->post(User::PASSWORD)) {
+            $user->setPassword($password);
+        }
+
+        $postedRoleIds = array_keys($this->request->post(User::ROLES, []));
 
         foreach ($this->roleRepository->getAll() as $role) {
             if (in_array($role->getId(), $postedRoleIds)) {
