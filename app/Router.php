@@ -2,17 +2,20 @@
 
 namespace App;
 
+use App\Controllers\RootController;
 use App\Controllers\UserController;
 use Slim\Slim;
 
 class Router
 {
+    private $rootController;
     private $userController;
     /** @var Slim */
     private $app;
 
-    public function __construct(UserController $userController)
+    public function __construct(RootController $rootController, UserController $userController)
     {
+        $this->rootController = $rootController;
         $this->userController = $userController;
     }
 
@@ -31,6 +34,16 @@ class Router
     {
         $this->app->get('/', function () {
             die ("Hello world!");
+        });
+
+        $this->app->get('/login', function() {
+            return $this->rootController->getLogin();
+        });
+        $this->app->post('/login', function() {
+            return $this->rootController->postLogin();
+        });
+        $this->app->post('/logout', function() {
+            return $this->rootController->logout();
         });
     }
 

@@ -14,6 +14,7 @@ class User extends Entity
     const TABLE = 'users';
     const FIRST_NAME = 'first_name';
     const LAST_NAME = 'last_name';
+    const EMAIL = 'email';
     const PASSWORD = 'password';
     const ROLES = 'roles';
 
@@ -21,6 +22,8 @@ class User extends Entity
     private $first_name;
     /** @var string */
     private $last_name;
+    /** @var string */
+    private $email;
     /** @var string */
     private $password;
     /** @var Collection */
@@ -65,6 +68,25 @@ class User extends Entity
     public function setLastName($last_name)
     {
         $this->last_name = $last_name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -130,6 +152,7 @@ class User extends Entity
         $builder->setTable(static::TABLE);
         $builder->addField(static::FIRST_NAME, Type::STRING);
         $builder->addField(static::LAST_NAME, Type::STRING);
+        $builder->createField(static::EMAIL, Type::STRING)->unique()->build();
         $builder->addField(static::PASSWORD, Type::STRING);
         $builder->createManyToMany(static::ROLES, Role::class)->build();
     }

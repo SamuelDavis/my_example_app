@@ -21,7 +21,7 @@ class Controller
         $this->app->render($template, $data, $status);
     }
 
-    protected function redirect($url, $status = 302)
+    protected function redirect($url, $status = 200)
     {
         $this->app->redirect($url, $status);
     }

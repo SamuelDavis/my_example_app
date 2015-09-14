@@ -27,6 +27,10 @@ use App\Entities\User;
         <input type="text" name="<?= User::LAST_NAME ?>" value="<?= $user->getLastName() ?>">
         <br>
 
+        <label for="<?= User::EMAIL ?>">Email</label>:
+        <input type="text" name="<?= User::EMAIL ?>" value="<?= $user->getEmail() ?>">
+        <br>
+
         <?php if (!$user->hasPassword()): ?>
         <label for="<?= User::PASSWORD ?>">Password</label>:
         <input type="text" name="<?= User::PASSWORD ?>">

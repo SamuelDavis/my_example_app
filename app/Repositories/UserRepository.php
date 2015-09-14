@@ -11,4 +11,15 @@ use App\Entities\User;
 class UserRepository extends Repository
 {
     const ENTITY = User::class;
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function findByEmail($email)
+    {
+        return $this->repo->findOneBy([
+            User::EMAIL => $email,
+        ]);
+    }
 }

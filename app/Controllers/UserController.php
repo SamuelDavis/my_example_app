@@ -5,22 +5,26 @@ namespace App\Controllers;
 use App\Entities\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Services\AuthenticationService;
 use Slim\Http\Request;
 use Slim\Slim;
 
 class UserController extends Controller
 {
+    private $authenticator;
     private $userRepository;
     private $roleRepository;
 
     public function __construct(
         Slim $app,
         Request $request,
+        AuthenticationService $authenticator,
         UserRepository $userRepository,
         RoleRepository $roleRepository
     ) {
         parent::__construct($app, $request);
 
+        $this->authenticator = $authenticator;
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
     }
@@ -29,6 +33,7 @@ class UserController extends Controller
     {
         $this->render('users/list', [
             'users' => $this->userRepository->getAll(),
+            'currentUser' => $this->authenticator->getCurrentUser(),
         ]);
     }
 
@@ -55,11 +60,17 @@ class UserController extends Controller
             $user = $this->userRepository->build();
         }
 
-        $user
-            ->setFirstName($this->request->post(User::FIRST_NAME))
-            ->setLastName($this->request->post(User::LAST_NAME));
+        $firstName = $this->request->post(User::FIRST_NAME);
+        $lastName = $this->request->post(User::LAST_NAME);
+        $email = $this->request->post(User::EMAIL);
+        $password = $this->request->post(User::PASSWORD);
 
-        if ($password = $this->request->post(User::PASSWORD)) {
+        $user
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
+            ->setEmail($email);
+
+        if ($password) {
             $user->setPassword($password);
         }
 
@@ -79,7 +90,7 @@ class UserController extends Controller
             $this->userRepository->remove($user);
         }
 
-        $this->redirect('/users', 200);
+        $this->redirect('/users');
 
     }
 }

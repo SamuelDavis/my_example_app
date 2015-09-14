@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Controllers\RootController;
 use App\Controllers\UserController;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Services\AuthenticationService;
 use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -28,19 +30,26 @@ class ServiceRegistry
         $userRepository = new UserRepository($entityManager);
         $roleRepository = new RoleRepository($entityManager);
 
-        $userController = new UserController($app, $app->request, $userRepository, $roleRepository);
-        $router = new Router($userController);
+        $authenticator = new AuthenticationService($userRepository);
+
+        $rootController = new RootController($app, $app->request, $authenticator, $userRepository);
+        $userController = new UserController($app, $app->request, $authenticator, $userRepository, $roleRepository);
+
+        $router = new Router($rootController, $userController);
 
         $this->setBindings($app, [
             $entityManager,
             $userRepository,
             $roleRepository,
+            $authenticator,
+            $rootController,
             $userController,
             $router,
         ]);
     }
 
-    private function setBindings(Slim $app, array $bindings) {
+    private function setBindings(Slim $app, array $bindings)
+    {
         foreach ($bindings as $binding) {
             $app->container->set(get_class($binding), $binding);
         }
