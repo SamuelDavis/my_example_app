@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Entities\User;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use App\Route;
 use App\Services\AuthenticationService;
 use Slim\Http\Request;
 use Slim\Slim;
@@ -87,7 +88,7 @@ class UserController extends Controller
             $this->userRepository->remove($user);
         }
 
-        $this->redirect('/users');
+        $this->redirect(Route::to(Route::USERS_LIST));
 
     }
 }

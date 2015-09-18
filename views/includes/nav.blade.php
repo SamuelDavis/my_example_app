@@ -1,5 +1,5 @@
 <?php
-use App\Entities\User;
+use App\Entities\User;use App\Route;
 
 /**
  * @var User $currentUser
@@ -8,8 +8,15 @@ use App\Entities\User;
 ?>
 
 <?php if ($currentUser): ?>
-<a href="/logout"><button>Logout</button></a>
+<a href="<?= Route::to(Route::LOGOUT) ?>">
+    <button>Logout</button>
+</a>
 <?php else: ?>
-<a href="/login"><button>Login</button></a>
+<a href="<?= Route::to(Route::LOGIN_GET) ?>">
+    <button>Login</button>
+</a>
+<a href="<?= Route::to(Route::REGISTER_GET) ?>">
+    <button>Register</button>
+</a>
 <?php endif; ?>
 <hr>

@@ -1,11 +1,11 @@
 @extends('layouts/base')
 <?php
-use App\Entities\User;
+use App\Entities\User;use App\Route;
 
 ?>
 
 @section('body')
-    <form action="/login" method="post">
+    <form action="<?= Route::to(Route::LOGIN_POST) ?>" method="post">
         <label for="<?= User::EMAIL ?>">Email</label>:
         <input type="text" name="<?= User::EMAIL ?>">
         <br>

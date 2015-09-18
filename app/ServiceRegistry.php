@@ -36,6 +36,7 @@ class ServiceRegistry
         $userController = new UserController($app, $app->request, $authenticator, $userRepository, $roleRepository);
 
         $router = new Router($rootController, $userController);
+        Route::init($app);
 
         $this->setBindings($app, [
             $entityManager,

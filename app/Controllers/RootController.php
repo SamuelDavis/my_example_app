@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\User;
 use App\Repositories\UserRepository;
+use App\Route;
 use App\Services\AuthenticationService;
 use Slim\Http\Request;
 use Slim\Slim;
@@ -27,7 +28,7 @@ class RootController extends Controller
     public function getLogin()
     {
         if ($this->authenticator->getCurrentUser()) {
-            $this->redirect('/users');
+            $this->redirect(Route::to(Route::USERS_LIST));
         }
 
         $this->render('login');
@@ -41,16 +42,48 @@ class RootController extends Controller
 
         if ($user) {
             $this->authenticator->login($user);
-            $this->redirect('/users');
+            $this->redirect(Route::to(Route::USERS_LIST));
         }
 
         $this->redirect('/login', 402);
+    }
+
+    public function getRegister()
+    {
+        $this->render('register');
+    }
+
+    public function postRegister()
+    {
+        $email = $this->request->post(User::EMAIL);
+        if ($this->userRepository->findByEmail($email)) {
+            $this->redirect(Route::to(Route::REGISTER_GET), 400);
+        }
+
+        $password = $this->request->post(User::PASSWORD);
+        $firstName = $this->request->post(User::FIRST_NAME);
+        $lastName = $this->request->post(User::LAST_NAME);
+
+        $user = (new User())
+            ->setEmail($email)
+            ->setPassword($password)
+            ->setFirstName($firstName)
+            ->setLastName($lastName);
+
+        $this->userRepository->add($user);
+
+        if ($this->authenticator->authenticate($email, $password)) {
+            $this->authenticator->login($user);
+            $this->redirect(Route::to(Route::USERS_LIST));
+        }
+
+        $this->redirect(Route::to(Route::REGISTER_GET), 402);
     }
 
     public function logout()
     {
         $this->authenticator->logout();
 
-        $this->redirect('/login');
+        $this->redirect(Route::to(Route::LOGIN_GET));
     }
 }
